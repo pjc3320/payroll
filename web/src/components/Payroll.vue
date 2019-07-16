@@ -6,6 +6,7 @@
         >
             <v-toolbar-title>Payroll</v-toolbar-title>
         </v-toolbar>
+        <v-divider></v-divider>
         <v-toolbar
                 card
                 color="blue-grey"
