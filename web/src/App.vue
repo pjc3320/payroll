@@ -1,20 +1,19 @@
 <template>
   <v-app>
-    <Payroll />
+    <Layout></Layout>
   </v-app>
 </template>
 
 <script>
-import Payroll from './components/Payroll.vue'
+import Layout from "./components/Layout.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    Payroll
+    Layout
   }
-}
+};
 </script>
 
 <style lang="scss">
-
 </style>
