@@ -16,14 +16,11 @@
 
 <style lang="scss">
 </style>
+
 <script>
 export default {
   name: "TopBar",
-  props: {
-    msg: String
-  },
-  data: () => ({
-    //
-  })
+
+  data: () => ({})
 };
 </script>
