@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <top-bar></top-bar>
-    <v-content v-if="!showSignedOut">
+    <v-content>
       <v-container grid-list-lg>
         <v-layout column>
           <v-flex xs12>
