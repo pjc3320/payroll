@@ -1,76 +1,92 @@
 <template>
-    <v-card>
-        <v-toolbar
-                color="cyan"
-                dark
-        >
-            <v-toolbar-title>Payroll</v-toolbar-title>
-        </v-toolbar>
-        <v-divider></v-divider>
-        <v-toolbar
-                card
-                color="blue-grey"
-                dark
-        >
-            <v-toolbar-title>Submit a post</v-toolbar-title>
-        </v-toolbar>
-
-        <v-card-text>
-            <v-text-field box label="Title" value="My new post"></v-text-field>
-
-            <v-textarea
-                    box
-                    label="Text"
-                    value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse"
-            ></v-textarea>
-
-            <v-divider class="my-2"></v-divider>
-
-            <v-item-group multiple>
-                <v-subheader>Tags</v-subheader>
-                <v-item
-                        v-for="n in 8"
-                        :key="n"
-                >
-                    <v-chip
-                            slot-scope="{ active, toggle }"
-                            :selected="active"
-                            @click="toggle"
-                    >
-                        Tag {{ n }}
-                    </v-chip>
-                </v-item>
-            </v-item-group>
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-                    color="success"
-                    depressed
-            >
-                Post
+  <div class="page">
+    <v-flex s12>
+      <v-flex s10>
+        <v-card elevation24 align-center color="primary">
+          <v-card-title primary-title>
+            <div>
+              <h3 class="headline">Employees</h3>
+            </div>
+            <v-btn fab small color="cyan accent-2" bottom left absolute @click="dialog = !dialog">
+              <v-icon>add</v-icon>
             </v-btn>
-        </v-card-actions>
-    </v-card>
+          </v-card-title>
+          <v-data-table :headers="headers" :items="employees" class="elevation-3">
+            <template v-slot:items="props">
+              <td>{{ props.item.firstName }}</td>
+              <td>{{ props.item.lastName }}</td>
+              <td class="text-xs-center">{{ props.item.dependentCount }}</td>
+              <td class="text-xs-right">{{ props.item.benefitCost }}</td>
+            </template>
+          </v-data-table>
+        </v-card>
+      </v-flex>
+    </v-flex>
+  </div>
 </template>
+
 <style lang="scss">
-    .input-box {
-        .v-label {
-            font-weight: bold;
-        }
-    }
+h3.headline {
+  color: "white";
+}
 </style>
 <script>
-    export default {
-        name: 'Payroll',
-        props: {
-            msg: String
+export default {
+  name: "Payroll",
+
+  data() {
+    return {
+      headers: [
+        {
+          text: "First Name",
+          align: "left",
+          sortable: true,
+          value: "firstName",
+          dataType: "String"
         },
-        data: () => ({
-            //
-        })
-    }
+        {
+          text: "Last Name",
+          align: "left",
+          sortable: true,
+          value: "lastName",
+          dataType: "String"
+        },
+        {
+          text: "# Dependents",
+          align: "center",
+          sortable: true,
+          value: "dependentCount",
+          dataType: "Numeric"
+        },
+        {
+          text: "Benefit Cost",
+          align: "right",
+          sortable: true,
+          value: "benefitCost",
+          dataType: "Currency"
+        }
+      ],
+      employees: [
+        {
+          firstName: "Eli",
+          lastName: "Manning",
+          dependentCount: 3,
+          benefitCost: 1000
+        },
+        {
+          firstName: "Saquon",
+          lastName: "Barkley",
+          dependentCount: 2,
+          benefitCost: 1000
+        },
+        {
+          firstName: "Pete",
+          lastName: "Alonso",
+          dependentCount: 0,
+          benefitCost: 1000
+        }
+      ]
+    };
+  }
+};
 </script>
