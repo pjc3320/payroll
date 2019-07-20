@@ -1,4 +1,4 @@
-﻿using Payroll.Models;
+﻿using Payroll.Application.Models;
 
 namespace Payroll.Application
 {

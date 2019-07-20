@@ -1,4 +1,4 @@
-﻿namespace Payroll.Data.Configuration
+﻿namespace Payroll.Application.Couchbase.Configuration
 {
     public static class CouchbaseOptions
     {

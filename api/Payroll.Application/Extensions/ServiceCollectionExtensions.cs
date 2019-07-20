@@ -6,7 +6,7 @@ using Couchbase.Configuration.Client;
 using Couchbase.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Payroll.Data.Configuration;
+using Payroll.Application.Couchbase.Configuration;
 
 namespace Payroll.Application.Extensions
 {

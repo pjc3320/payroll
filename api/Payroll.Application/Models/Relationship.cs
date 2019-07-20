@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Payroll.Models
+﻿namespace Payroll.Application.Models
 {
     public enum Relationship
     {
-        Self = 1,
-        Spouse = 2,
-        Child = 3
+        Spouse = 1,
+        Child = 2
     }
 }

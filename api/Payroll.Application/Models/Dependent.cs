@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Payroll.Models
+namespace Payroll.Application.Models
 {
     public class Dependent : Person
     {
-        private const int BenefitCost = 500;
+        public override double BenefitCost => 500;
+
+        public override string Type => "dependent";
+
+        public Guid EmployeeId { get; set; }
 
         public Relationship Relationship { get; set; }
     }

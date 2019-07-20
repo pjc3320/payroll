@@ -5,11 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CouchbaseNetClient" Version="2.7.10" />
     <PackageReference Include="MediatR" Version="7.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Payroll.Data\Payroll.Data.csproj" />
   </ItemGroup>
 
 </Project>
