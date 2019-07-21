@@ -7,10 +7,10 @@ namespace Payroll.Application.Couchbase
 {
     public interface IRepository<T> where T : BaseModel
     {
-        Task<T> Get(T model);
+        Task<T> Get(Guid entityId);
 
         Task<IEnumerable<T>> GetAll(string filter = null);
 
-        Task<T> Upsert(T entity);
+        Task Upsert(T entity);
     }
 }

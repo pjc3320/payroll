@@ -1,51 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Couchbase;
 using Couchbase.Core;
 using Couchbase.N1QL;
 using Payroll.Application.Models;
 
 namespace Payroll.Application.Couchbase
 {
-    public abstract class Repository<T> : IRepository<T> where T : BaseModel
+    public class Repository<T> : IRepository<T> where T : BaseModel
     {
         private readonly IBucket _bucket;
+        private readonly IEntityHelper<T> _entityHelper;
 
-        protected Repository(IBucket bucket)
+        protected Repository(IBucket bucket, IEntityHelper<T> entityHelper)
         {
             _bucket = bucket;
+            _entityHelper = entityHelper;
         }
 
-        public virtual async Task<T> Get(T model)
+        public async Task<T> Get(Guid entityId)
         {
-            var result = await _bucket.GetDocumentAsync<T>(GenerateKey(model));
+            var documentId = _entityHelper.DocumentIdFor(entityId);
+            var result = await _bucket.GetDocumentAsync<T>(documentId);
+
+            result.ThrowIfFailure();
 
             return result.Content;
         }
 
-        public virtual async Task<IEnumerable<T>> GetAll(string filter = null)
+        public async Task<IEnumerable<T>> GetAll(string filter = null)
         {
-            var n1ql = "select * from payroll where _type='user'";
+            var n1ql = $"select * from payroll where _type='{_entityHelper.Type}'";
             var queryRequest = new QueryRequest().Statement(n1ql);
 
-            var result = await _bucket.QueryAsync<dynamic>(queryRequest);
+            var result = await _bucket.QueryAsync<T>(queryRequest);
 
-            throw new NotImplementedException();
+            result.ThrowIfFailure();
+
+            return result.Rows;
         }
 
-        public virtual async Task<T> Upsert(T entity)
+        public async Task Upsert(T entity)
         {
-            var document = new Document<T> {Content = entity, Id = GenerateKey(entity)};
+            var document = _entityHelper.GetDocument(entity);
 
             var result = await _bucket.UpsertAsync(document);
 
-            return result.Content;
-        }
-
-        protected virtual string GenerateKey(T model)
-        {
-            return $"{model.Type}::{model.Id.ToString()}";
+            result.ThrowIfFailure();
         }
     }
 }
