@@ -6,7 +6,9 @@ using Couchbase.Configuration.Client;
 using Couchbase.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Payroll.Application.Couchbase;
 using Payroll.Application.Couchbase.Configuration;
+using Payroll.Application.Models;
 
 namespace Payroll.Application.Extensions
 {
@@ -31,12 +33,20 @@ namespace Payroll.Application.Extensions
 
             var configuration = new ClientConfiguration(clientDefinition);
             configuration.SetAuthenticator(authenticator);
+//            configuration.Serializer = () => serializer;
 
             var cluster = new Cluster(configuration);
 
-            services.AddTransient<ICluster>(c => cluster);
+            services.AddTransient<ICluster>(sp => cluster);
 
-            services.AddTransient(b => cluster.OpenBucket("payroll"));
+            services.AddTransient(sp => cluster.OpenBucket("payroll"));
+            return services;
+        }
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
+        {
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
             return services;
         }
     }

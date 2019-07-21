@@ -12,7 +12,7 @@ namespace Payroll.Application.Couchbase
         private readonly IBucket _bucket;
         private readonly IEntityHelper<T> _entityHelper;
 
-        protected Repository(IBucket bucket, IEntityHelper<T> entityHelper)
+        public Repository(IBucket bucket, IEntityHelper<T> entityHelper)
         {
             _bucket = bucket;
             _entityHelper = entityHelper;

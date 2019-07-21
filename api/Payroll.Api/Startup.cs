@@ -20,8 +20,9 @@ namespace Payroll.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(Application.GetEmployees.GetEmployeesHandler));
             services.AddCouchbase();
+            services.AddRepositories();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

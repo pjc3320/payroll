@@ -18,6 +18,7 @@ namespace Payroll.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(GetEmployees request)
         {
+            // TODO: add index
             var result = await _mediator.Send(request);
 
             return Ok(result);

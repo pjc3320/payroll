@@ -11,6 +11,11 @@ namespace Payroll.Application.Couchbase
         private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
         private readonly JsonSerializer _serializer = JsonSerializer.Create(_serializerSettings);
 
+        public EntityHelper(string type)
+        {
+            Type = type;
+        }
+
         public string Type { get; }
 
         public Func<T, Guid> GetEntityId { get; }
