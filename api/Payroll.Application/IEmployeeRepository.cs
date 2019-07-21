@@ -9,5 +9,7 @@ namespace Payroll.Application
     public interface IEmployeeRepository
     {
         Task<IEnumerable<Employee>> GetAll();
+
+        Task<Employee> Get(Guid id);
     }
 }

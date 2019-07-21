@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Couchbase.Core;
 using Payroll.Application.Couchbase;
@@ -8,12 +9,10 @@ namespace Payroll.Application
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly IBucket _bucket;
         internal IRepository<Employee> Employees;
 
         public EmployeeRepository(IBucket bucket)
         {
-            _bucket = bucket;
             var entityHelper = new EntityHelper<Employee>("employee");
             
             Employees = new Repository<Employee>(bucket, entityHelper);
@@ -22,6 +21,11 @@ namespace Payroll.Application
         public async Task<IEnumerable<Employee>> GetAll()
         {
             return await Employees.GetAll();
+        }
+
+        public async Task<Employee> Get(Guid id)
+        {
+            return await Employees.Get(id);
         }
     }
 }
