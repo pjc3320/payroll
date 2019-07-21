@@ -7,6 +7,7 @@ using Couchbase.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Payroll.Application.Couchbase;
+using Payroll.Application.Couchbase.BucketActions;
 using Payroll.Application.Couchbase.Configuration;
 using Payroll.Application.Models;
 
@@ -46,6 +47,14 @@ namespace Payroll.Application.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddActions(this IServiceCollection services)
+        {
+            services.AddTransient<IBucketAction, PrimaryIndexBucketBucketAction>();
+            services.AddTransient<IBucketAction, EmployeeIndexBucketBucketAction>();
 
             return services;
         }
