@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Payroll.Application.Couchbase.BucketActions;
 using Payroll.Application.Extensions;
 
@@ -20,11 +22,17 @@ namespace Payroll.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
+
             services.AddMediatR(typeof(Application.GetEmployees.GetEmployeesHandler));
             services.AddCouchbase();
             services.AddRepositories();
             services.AddActions();
+            
 
             var actions = services.BuildServiceProvider().GetServices<IBucketAction>().ToList();
 
