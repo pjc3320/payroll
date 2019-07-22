@@ -4,8 +4,10 @@ using Couchbase;
 using Couchbase.Authentication;
 using Couchbase.Configuration.Client;
 using Couchbase.Core;
+using Couchbase.Core.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Payroll.Application.Couchbase;
 using Payroll.Application.Couchbase.BucketActions;
 using Payroll.Application.Couchbase.Configuration;
@@ -30,12 +32,19 @@ namespace Payroll.Application.Extensions
             };
 
             var authenticator = new PasswordAuthenticator(CouchbaseOptions.Username, CouchbaseOptions.Password);
-            var serializer = new JsonSerializerSettings();
 
             var configuration = new ClientConfiguration(clientDefinition);
             configuration.SetAuthenticator(authenticator);
-//            configuration.Serializer = () => serializer;
+            configuration.Serializer = () =>
+            {
+                var jsonSerializerSettings = new JsonSerializerSettings
+                {
+                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                };
 
+                return new DefaultSerializer(jsonSerializerSettings, jsonSerializerSettings);
+            };
+            
             var cluster = new Cluster(configuration);
 
             services.AddTransient<ICluster>(sp => cluster);

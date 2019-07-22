@@ -1,5 +1,8 @@
-﻿namespace Payroll.Application.Models
+﻿using System;
+
+namespace Payroll.Application.Models
 {
+    [Serializable]
     public abstract class Person : BaseModel
     {
         public string FirstName { get; set; }

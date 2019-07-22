@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Payroll.Application.Couchbase;
 using Payroll.Application.Models;
 
 namespace Payroll.Application.GetEmployees
