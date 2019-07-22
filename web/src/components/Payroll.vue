@@ -13,9 +13,11 @@
           </v-card-title>
           <v-data-table :headers="headers" :items="employees" class="elevation-3">
             <template v-slot:items="props">
-              <td>{{ props.item.firstName }}</td>
-              <td>{{ props.item.lastName }}</td>
-              <td class="text-xs-center">{{ props.item.dependentCount }}</td>
+              <tr @click="selectedEmployee = props">
+                <td>{{ props.item.firstName }}</td>
+                <td>{{ props.item.lastName }}</td>
+                <td class="text-xs-center">{{ props.item.dependentCount }}</td>
+              </tr>
             </template>
             <template slot="no-data">
               <v-card class="text-xs-center pa-2">Sorry, no employees found.</v-card>
@@ -112,6 +114,17 @@ export default {
       //   }
       // ]
     };
+  },
+  created() {
+    // fetch the data when the view is created and the data is
+    // already being observed
+    this.getEmployees();
+  },
+
+  methods: {
+    async getEmployees() {
+      this.employees = await this.$payrollApi.getEmployees.get();
+    }
   }
 };
 </script>

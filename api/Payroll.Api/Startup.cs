@@ -32,6 +32,7 @@ namespace Payroll.Api
             services.AddCouchbase();
             services.AddRepositories();
             services.AddActions();
+            
 
             var actions = services.BuildServiceProvider().GetServices<IBucketAction>().ToList();
 
