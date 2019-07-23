@@ -29,10 +29,15 @@
                 <h3 class="display-1">Add an Employee</h3>
               </v-card-title>
               <v-card-text>
-                <v-text-field label="First Name" v-model="firstName"></v-text-field>
-                <v-text-field label="Last Name" v-model="lastName"></v-text-field>
+                <v-text-field label="First Name" v-model="firstName" ref="empFirstName"></v-text-field>
+                <v-text-field label="Last Name" v-model="lastName" ref="empLastName"></v-text-field>
                 <v-flex>
-                  <v-text-field label="# of Dependents" v-model="dependents" type="number"></v-text-field>
+                  <v-text-field
+                    label="# of Dependents"
+                    v-model="dependents"
+                    type="number"
+                    ref="dependents"
+                  ></v-text-field>
                 </v-flex>
               </v-card-text>
               <v-card-actions>
@@ -45,19 +50,23 @@
       </v-flex>
 
       <v-flex md6>
-        <v-card
-          elevation24
-          align-center
-          fill-height
-          color="primary"
-          v-if="selectedEmployee !== null"
-        >
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline">Benefit Costs</h3>
-            </div>
-          </v-card-title>
-        </v-card>
+        <transition name="slide-y-transition" mode="out-in">
+          <v-card
+            elevation24
+            align-center
+            fill-height
+            color="accent"
+            v-if="selectedEmployee !== null"
+          >
+            <v-card-title primary-title>
+              <div>
+                <h3
+                  class="headline"
+                >Benefit costs for {{ selectedEmployee.item.lastName }}, {{ selectedEmployee.item.firstName }}</h3>
+              </div>
+            </v-card-title>
+          </v-card>
+        </transition>
       </v-flex>
     </v-layout>
   </div>
@@ -75,7 +84,11 @@ export default {
   data() {
     return {
       dialog: false,
-
+      selectedEmployee: null,
+      dependents: 0,
+      firstName: "",
+      lastName: "",
+      employees: [],
       headers: [
         {
           text: "First Name",
@@ -98,20 +111,11 @@ export default {
           value: "dependents",
           dataType: "Numeric"
         }
-      ],
-      employees: []
+      ]
     };
   },
   async created() {
-    // fetch the data when the view is created and the data is
-    // already being observed
     await this.getEmployees();
-  },
-  props: {
-    selectedEmployee: null,
-    dependents: 0,
-    firstName: "",
-    lastName: ""
   },
   methods: {
     async getEmployees() {
@@ -120,17 +124,16 @@ export default {
       this.employees = result.data.data;
     },
     async upsertEmployee() {
-      const addEmployee = {
-        firstName,
-        lastName,
-        dependents
-      };
-
       var result = await this.$payrollApi.upsertEmployee.put({
-        payload: addEmployee
+        payload: {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          dependents: this.dependents
+        }
       });
 
-      dialog = false;
+      await this.getEmployees();
+      this.dialog = false;
     }
   }
 };

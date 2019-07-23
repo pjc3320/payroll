@@ -3,6 +3,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
@@ -29,6 +30,7 @@ namespace Payroll.Api
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
+
             services.AddCors(options =>
             {
                 options.AddPolicy("default", policy =>
@@ -42,7 +44,7 @@ namespace Payroll.Api
             services.AddCouchbase();
             services.AddRepositories();
             services.AddActions();
-            services.AddAutoMapper(typeof(Startup));
+            services.AddDependencies();
 
 
             var actions = services.BuildServiceProvider().GetServices<IBucketAction>().ToList();

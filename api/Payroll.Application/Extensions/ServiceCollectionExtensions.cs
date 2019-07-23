@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using Couchbase;
 using Couchbase.Authentication;
 using Couchbase.Configuration.Client;
@@ -33,21 +34,20 @@ namespace Payroll.Application.Extensions
 
             var configuration = new ClientConfiguration(clientDefinition);
             configuration.SetAuthenticator(authenticator);
-            configuration.Serializer = () =>
+            var serializerSettings = new JsonSerializerSettings
             {
-                var jsonSerializerSettings = new JsonSerializerSettings
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                };
-
-                return new DefaultSerializer(jsonSerializerSettings, jsonSerializerSettings);
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
-            
+            var serializer = new DefaultSerializer(serializerSettings, serializerSettings);
+
+            configuration.Serializer = () => serializer;
             var cluster = new Cluster(configuration);
 
             services.AddTransient<ICluster>(sp => cluster);
 
             services.AddTransient(sp => cluster.OpenBucket("payroll"));
+            services.AddSingleton<ITypeSerializer>(new DefaultSerializer(serializerSettings, serializerSettings));
+
             return services;
         }
 
@@ -62,6 +62,13 @@ namespace Payroll.Application.Extensions
         {
             services.AddTransient<IBucketAction, PrimaryIndexBucketBucketAction>();
             services.AddTransient<IBucketAction, EmployeeIndexBucketBucketAction>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(ApplicationMapperProfile));
 
             return services;
         }

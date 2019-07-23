@@ -25,17 +25,17 @@ namespace Payroll.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            throw new NotImplementedException();
-        }
+//        [HttpGet]
+//        public async Task<IActionResult> Get(Guid id)
+//        {
+//            throw new NotImplementedException();
+//        }
 
         [HttpPut]
-        public async Task<IActionResult> Put(AddEmployee request)
+        public async Task<IActionResult> Put([FromBody] AddEmployee request)
         {
             var result = await _mediator.Send(request);
-
+            
             return Ok(result);
         }
     }

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Couchbase.Core;
-using Payroll.Application.Couchbase;
+using Couchbase.Repositories;
+using Couchbase.Repositories.Implementations;
 using Payroll.Application.Models;
 
 namespace Payroll.Application
@@ -13,24 +14,26 @@ namespace Payroll.Application
 
         public EmployeeRepository(IBucket bucket)
         {
-            var entityHelper = new EntityHelper<Employee>("employee");
+            var entityDescription = new EntityHelper<Employee>("employee",e => e.Id.ToString());
             
-            Employees = new Repository<Employee>(bucket, entityHelper);
+            Employees = new Repository<Employee>(bucket, entityDescription);
         }
 
         public async Task<IEnumerable<Employee>> GetAll()
         {
-            return await Employees.GetAll();
+            var result = await Employees.GetAllAsync();
+
+            return result;
         }
 
         public async Task<Employee> Get(Guid id)
         {
-            return await Employees.Get(id);
+            return await Employees.GetAsync(id.ToString());
         }
 
         public async Task<Employee> Upsert(Employee employee)
         {
-            await Employees.Upsert(employee);
+            await Employees.UpsertAsync(employee);
 
             return employee;
         }

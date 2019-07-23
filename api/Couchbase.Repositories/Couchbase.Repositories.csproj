@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Me</Authors>
+    <Description>Couchbase repositories.</Description>
+    <Version>1.0</Version>
+    <Copyright>All Rights Reserved</Copyright>
+    <Company></Company>
+    <PackageTags></PackageTags>
+    <RepositoryUrl></RepositoryUrl>
+    <AssemblyName>Couchbase.Repositories</AssemblyName>
+    <RootNamespace>Couchbase.Repositories</RootNamespace>  		
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+    <DocumentationFile></DocumentationFile>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+    <DocumentationFile>bin\Release\netstandard2.0\DSI.Couchbase.Repositories.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CouchbaseNetClient" Version="2.5.10" />
+  </ItemGroup>
+
+</Project>
