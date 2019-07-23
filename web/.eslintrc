@@ -1,0 +1,13 @@
+{
+  "rules": {
+    "linebreak-style": "off" //Turning this off due to a TeamCity issue with line breaks
+  },
+  "globals": {
+    "driver": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9
+  },
+  "plugins": ["vue"],
+  "extends": ["plugin:vue/essential", "prettier"]
+}

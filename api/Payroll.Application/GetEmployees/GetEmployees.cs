@@ -4,7 +4,7 @@ using Payroll.Application.Models;
 
 namespace Payroll.Application.GetEmployees
 {
-    public class GetEmployees : IRequest<IEnumerable<Employee>>
+    public class GetEmployees : IRequest<PagedResult<Employee>>
     {
     }
 }

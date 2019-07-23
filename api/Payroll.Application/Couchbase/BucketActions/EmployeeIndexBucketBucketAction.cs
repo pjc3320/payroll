@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Couchbase.Core;
+using Couchbase.Repositories.Implementations;
 
 namespace Payroll.Application.Couchbase.BucketActions
 {

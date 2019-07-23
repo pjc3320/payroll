@@ -1,13 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Payroll.Application.Models
 {
-    public class Employee : Person
+    [Serializable]
+    [BindProperties(SupportsGet = true)]
+    public class Employee
     {
-        public override double BenefitCost => 1000;
+        [JsonProperty("id")]
+        public Guid Id { get; set; }
 
-        public override string Type => "employee";
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
 
-        public IEnumerable<Dependent> Dependents { get; set; }
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
+
+        [JsonProperty("dependents")]
+        public int Dependents { get; set; }
     }
 }
