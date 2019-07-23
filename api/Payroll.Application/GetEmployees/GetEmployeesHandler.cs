@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -6,7 +7,7 @@ using Payroll.Application.Models;
 
 namespace Payroll.Application.GetEmployees
 {
-    public class GetEmployeesHandler : IRequestHandler<GetEmployees, IEnumerable<Employee>>
+    public class GetEmployeesHandler : IRequestHandler<GetEmployees, PagedResult<Employee>>
     {
         private readonly IEmployeeRepository _repository;
 
@@ -15,11 +16,12 @@ namespace Payroll.Application.GetEmployees
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)
+        public async Task<PagedResult<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)
         {
             var result = await _repository.GetAll();
+            var employees = result.ToList();
 
-            return result;
+            return new PagedResult<Employee>(1, employees.Count, employees);
         }
     }
 }

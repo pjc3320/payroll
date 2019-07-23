@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Couchbase.Core;
 using Couchbase.N1QL;
+using Newtonsoft.Json.Linq;
 using Payroll.Application.Models;
 
 namespace Payroll.Application.Couchbase
 {
-    public class Repository<T> : IRepository<T> where T : BaseModel
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly IBucket _bucket;
         private readonly IEntityHelper<T> _entityHelper;
@@ -40,13 +41,15 @@ namespace Payroll.Application.Couchbase
             return result.Rows;
         }
 
-        public async Task Upsert(T entity)
+        public async Task<T> Upsert(T entity)
         {
             var document = _entityHelper.GetDocument(entity);
 
             var result = await _bucket.UpsertAsync(document);
 
             result.ThrowIfFailure();
+
+            return entity;
         }
     }
 }

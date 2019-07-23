@@ -3,7 +3,7 @@ import PayrollClient from "./PayrollClient";
 import PayrollAxiosInterface from "./PayrollAxiosInterface";
 
 const apiSettings = {
-  baseUrl: "http://localhost:5101"
+  baseUrl: "http://payroll.localdev.me:51020"
 };
 
 const axios = new Axios.create({

@@ -12,11 +12,11 @@
             </v-btn>
           </v-card-title>
           <v-data-table :headers="headers" :items="employees" class="elevation-3">
-            <template v-slot:items="props">
+            <template slot="items" slot-scope="props">
               <tr @click="selectedEmployee = props">
                 <td>{{ props.item.firstName }}</td>
                 <td>{{ props.item.lastName }}</td>
-                <td class="text-xs-center">{{ props.item.dependentCount }}</td>
+                <td class="text-xs-center">{{ props.item.dependents }}</td>
               </tr>
             </template>
             <template slot="no-data">
@@ -26,15 +26,18 @@
           <v-dialog v-model="dialog" max-width="500px">
             <v-card>
               <v-card-title primary-title>
-                <h3 class="headline">Add an Employee</h3>
+                <h3 class="display-1">Add an Employee</h3>
               </v-card-title>
               <v-card-text>
-                <v-text-field label="First Name"></v-text-field>
-                <v-text-field label="Last Name"></v-text-field>
+                <v-text-field label="First Name" v-model="firstName"></v-text-field>
+                <v-text-field label="Last Name" v-model="lastName"></v-text-field>
+                <v-flex>
+                  <v-text-field label="# of Dependents" v-model="dependents" type="number"></v-text-field>
+                </v-flex>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn flat color="primary" @click="dialog = false">Submit</v-btn>
+                <v-btn flat color="primary" @click="upsertEmployee()">Submit</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -72,7 +75,7 @@ export default {
   data() {
     return {
       dialog: false,
-      selectedEmployee: null,
+
       headers: [
         {
           text: "First Name",
@@ -92,38 +95,42 @@ export default {
           text: "# Dependents",
           align: "center",
           sortable: true,
-          value: "dependentCount",
+          value: "dependents",
           dataType: "Numeric"
         }
       ],
       employees: []
-      //   {
-      //     firstName: "Eli",
-      //     lastName: "Manning",
-      //     dependentCount: 3
-      //   },
-      //   {
-      //     firstName: "Saquon",
-      //     lastName: "Barkley",
-      //     dependentCount: 2
-      //   },
-      //   {
-      //     firstName: "Pete",
-      //     lastName: "Alonso",
-      //     dependentCount: 0
-      //   }
-      // ]
     };
   },
-  created() {
+  async created() {
     // fetch the data when the view is created and the data is
     // already being observed
-    this.getEmployees();
+    await this.getEmployees();
   },
-
+  props: {
+    selectedEmployee: null,
+    dependents: 0,
+    firstName: "",
+    lastName: ""
+  },
   methods: {
     async getEmployees() {
-      this.employees = await this.$payrollApi.getEmployees.get();
+      var result = await this.$payrollApi.getEmployees.get();
+      console.log(result.data);
+      this.employees = result.data.data;
+    },
+    async upsertEmployee() {
+      const addEmployee = {
+        firstName,
+        lastName,
+        dependents
+      };
+
+      var result = await this.$payrollApi.upsertEmployee.put({
+        payload: addEmployee
+      });
+
+      dialog = false;
     }
   }
 };

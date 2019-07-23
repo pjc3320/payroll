@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Payroll.Application.Models
 {
-    public class Employee : Person
+    public class Employee
     {
-        public override double BenefitCost => 1000;
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public override string Type => "employee";
+        public string FirstName { get; set; }
 
-        public IEnumerable<Dependent> Dependents { get; set; }
+        public string LastName { get; set; }
+
+        public int Dependents { get; set; }
     }
 }

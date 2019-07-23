@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Payroll.Application.AddEmployee;
 using Payroll.Application.GetEmployees;
 
 namespace Payroll.Api.Controllers
@@ -18,7 +20,20 @@ namespace Payroll.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(GetEmployees request)
         {
-            // TODO: add index
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(AddEmployee request)
+        {
             var result = await _mediator.Send(request);
 
             return Ok(result);

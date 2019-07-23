@@ -8,10 +8,8 @@ using Couchbase.Core.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Payroll.Application.Couchbase;
 using Payroll.Application.Couchbase.BucketActions;
 using Payroll.Application.Couchbase.Configuration;
-using Payroll.Application.Models;
 
 namespace Payroll.Application.Extensions
 {

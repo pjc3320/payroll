@@ -27,5 +27,12 @@ namespace Payroll.Application
         {
             return await Employees.Get(id);
         }
+
+        public async Task<Employee> Upsert(Employee employee)
+        {
+            await Employees.Upsert(employee);
+
+            return employee;
+        }
     }
 }
