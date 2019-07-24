@@ -1,23 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Payroll.Application.AddDependents;
 using Payroll.Application.AddEmployee;
 using Payroll.Application.GetEmployees;
 
 namespace Payroll.Api.Controllers
 {
-    [Route("employees")]
-    public class EmployeeController : Controller
+    [Route("people")]
+    public class PersonController : Controller
     {
         private readonly IMediator _mediator;
 
-        public EmployeeController(IMediator mediator)
+        public PersonController(IMediator mediator)
         {
             _mediator = mediator;
         }
 
         [HttpGet]
+        [Route("employees")]
         public async Task<IActionResult> GetAll(GetEmployees request)
         {
             var result = await _mediator.Send(request);
@@ -25,17 +26,21 @@ namespace Payroll.Api.Controllers
             return Ok(result);
         }
 
-//        [HttpGet]
-//        public async Task<IActionResult> Get(Guid id)
-//        {
-//            throw new NotImplementedException();
-//        }
-
         [HttpPut]
+        [Route("employees")]
         public async Task<IActionResult> Put([FromBody] AddEmployee request)
         {
             var result = await _mediator.Send(request);
-            
+
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("dependents")]
+        public async Task<IActionResult> PutDependent([FromBody] AddDependent request)
+        {
+            var result = await _mediator.Send(request);
+
             return Ok(result);
         }
     }

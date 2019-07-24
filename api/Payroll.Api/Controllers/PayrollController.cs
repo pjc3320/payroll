@@ -1,18 +1,26 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Payroll.Application;
+using Payroll.Application.GetPayrollDeductions;
 
 namespace Payroll.Api.Controllers
 {
     [Route("payroll")]
-    [ApiController]
     public class PayrollController : ControllerBase
     {
-       [HttpGet]
-       public async Task<IActionResult> CalculateBenefitCosts(GetPayrollDeductions request)
+        private readonly IMediator _mediator;
+
+        public PayrollController(IMediator mediator)
         {
-            throw new NotImplementedException();
+            _mediator = mediator;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CalculateBenefitCosts([FromBody] GetPayrollDeductions request)
+        {
+            var result = await _mediator.Send(request);
+
+            return Ok(result);
         }
     }
 }

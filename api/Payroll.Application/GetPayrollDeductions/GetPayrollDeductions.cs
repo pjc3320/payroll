@@ -1,13 +1,10 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Payroll.Application.Models;
 
-namespace Payroll.Application
+namespace Payroll.Application.GetPayrollDeductions
 {
     public class GetPayrollDeductions : IRequest<GetPayrollDeductionResponse>
     {
-
+        public Employee Employee { get; set; }
     }
 }

@@ -21,7 +21,10 @@ namespace Payroll.Application.AddEmployee
         public async Task<Employee> Handle(AddEmployee request, CancellationToken cancellationToken)
         {
             var employee = _mapper.Map<Employee>(request);
-            employee.Id = Guid.NewGuid();
+            if (employee.Id == Guid.Empty)
+            {
+                employee.Id = Guid.NewGuid();
+            }
 
             return await _repository.Upsert(employee);
         }

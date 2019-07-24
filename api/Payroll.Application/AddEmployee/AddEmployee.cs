@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Collections.Generic;
+using MediatR;
 using Payroll.Application.Models;
 
 namespace Payroll.Application.AddEmployee
@@ -9,6 +10,8 @@ namespace Payroll.Application.AddEmployee
 
         public string LastName { get; set; }
 
-        public int Dependents { get; set; }
+        public int DependentCount { get; set; }
+
+        public IEnumerable<Dependent> Dependents { get; set; }
     }
 }

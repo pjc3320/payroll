@@ -54,6 +54,7 @@ namespace Payroll.Application.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IDependentRepository, DependentRepository>();
 
             return services;
         }

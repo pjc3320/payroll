@@ -1,11 +1,11 @@
 ﻿using Payroll.Application.Models;
 
-namespace Payroll.Application
+namespace Payroll.Application.GetPayrollDeductions
 {
     public class GetPayrollDeductionResponse
     {
         public Employee Employee { get; set; }
 
-        public float Deduction { get; set; }
+        public DeductionDetail DeductionDetail { get; set; }
     }
 }

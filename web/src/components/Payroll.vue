@@ -16,29 +16,36 @@
               <tr @click="selectedEmployee = props">
                 <td>{{ props.item.firstName }}</td>
                 <td>{{ props.item.lastName }}</td>
-                <td class="text-xs-center">{{ props.item.dependents }}</td>
+                <td class="text-xs-center">{{ props.item.dependents.length }}</td>
               </tr>
             </template>
             <template slot="no-data">
               <v-card class="text-xs-center pa-2">Sorry, no employees found.</v-card>
             </template>
           </v-data-table>
-          <v-dialog v-model="dialog" max-width="500px">
+          <v-dialog v-model="dialog" max-width="600px">
             <v-card>
-              <v-card-title primary-title>
-                <h3 class="display-1">Add an Employee</h3>
+              <v-card-title class="headline grey lighten-2" primary-title>
+                <span class="dialog-title">Add an Employee</span>
               </v-card-title>
               <v-card-text>
                 <v-text-field label="First Name" v-model="firstName" ref="empFirstName"></v-text-field>
                 <v-text-field label="Last Name" v-model="lastName" ref="empLastName"></v-text-field>
-                <v-flex>
-                  <v-text-field
-                    label="# of Dependents"
-                    v-model="dependents"
-                    type="number"
-                    ref="dependents"
-                  ></v-text-field>
-                </v-flex>
+                <span class="subheading">
+                  <b>Dependents</b>
+                </span>
+                <v-divider></v-divider>
+                <v-layout row wrap>
+                  <v-text-field label="First Name" v-model="dependentFirstName"></v-text-field>
+                  <v-text-field label="Last Name" v-model="dependentLastName"></v-text-field>
+                  <v-btn fab small color="cyan accent-2" @click="addDependent()">
+                    <v-icon>add</v-icon>
+                  </v-btn>
+                </v-layout>
+                <v-list v-for="dep in dependents" :key="dep.lastName">
+                  <v-list-tile>{{ dep.lastName }}, {{ dep.firstName }}</v-list-tile>
+                  <v-divider></v-divider>
+                </v-list>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -76,6 +83,9 @@
 .headline {
   color: white;
 }
+.dialog-title {
+  color: black;
+}
 </style>
 <script>
 export default {
@@ -85,10 +95,12 @@ export default {
     return {
       dialog: false,
       selectedEmployee: null,
-      dependents: 0,
       firstName: "",
       lastName: "",
+      dependentFirstName: "",
+      dependentLastName: "",
       employees: [],
+      dependents: [],
       headers: [
         {
           text: "First Name",
@@ -108,7 +120,7 @@ export default {
           text: "# Dependents",
           align: "center",
           sortable: true,
-          value: "dependents",
+          value: "dependents.length",
           dataType: "Numeric"
         }
       ]
@@ -120,20 +132,63 @@ export default {
   methods: {
     async getEmployees() {
       var result = await this.$payrollApi.getEmployees.get();
-      console.log(result.data);
       this.employees = result.data.data;
     },
     async upsertEmployee() {
-      var result = await this.$payrollApi.upsertEmployee.put({
+      // add the employee first so we can get the id generated
+      var employeeResult = await this.$payrollApi.upsertEmployee.put({
         payload: {
           firstName: this.firstName,
-          lastName: this.lastName,
-          dependents: this.dependents
+          lastName: this.lastName
         }
       });
 
+      var employeeId = employeeResult.data.id;
+
+      // add the dependents
+      if (this.dependents.length > 0) {
+        console.log("upserting dependents");
+        console.log(this.dependents);
+        await this.upsertDependents(employeeId);
+
+        console.log(`adding dependents to employee ${employeeId}`);
+
+        // update the employee with the list of dependents
+        var updateResult = await this.$payrollApi.upsertEmployee.put({
+          payload: {
+            id: employeeId,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            dependents: this.dependents
+          }
+        });
+      }
+
       await this.getEmployees();
       this.dialog = false;
+    },
+    async upsertDependents(employeeId) {
+      for (let i = 0; i < this.dependents.length; i++) {
+        var result = await this.$payrollApi.upsertDependent.put({
+          payload: {
+            employeeId: employeeId,
+            firstName: this.dependents[i].firstName,
+            lastName: this.dependents[i].lastName
+          }
+        });
+        console.log("after dependent upsert");
+        console.log(result);
+        this.dependents[i].id = result.data.id;
+      }
+    },
+    addDependent() {
+      this.dependents.push({
+        firstName: this.dependentFirstName,
+        lastName: this.dependentLastName
+      });
+
+      this.dependentFirstName = "";
+      this.dependentLastName = "";
     }
   }
 };

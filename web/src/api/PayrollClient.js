@@ -4,14 +4,22 @@ export default class {
   constructor(payrollInterface) {
     this.interface = payrollInterface;
 
-    this.heartbeat = new PayrollEndpoint(this.interface, "/heartbeat", ["get"]);
+    this.getEmployees = new PayrollEndpoint(
+      this.interface,
+      "/people/employees",
+      ["get"]
+    );
 
-    this.getEmployees = new PayrollEndpoint(this.interface, "/employees", [
-      "get"
-    ]);
+    this.upsertEmployee = new PayrollEndpoint(
+      this.interface,
+      "/people/employees",
+      ["put"]
+    );
 
-    this.upsertEmployee = new PayrollEndpoint(this.interface, "/employees", [
-      "put"
-    ]);
+    this.upsertDependent = new PayrollEndpoint(
+      this.interface,
+      "/people/dependents",
+      ["put"]
+    );
   }
 }
