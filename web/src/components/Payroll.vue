@@ -13,7 +13,7 @@
           </v-card-title>
           <v-data-table :headers="headers" :items="employees" class="elevation-3">
             <template slot="items" slot-scope="props">
-              <tr @click="selectedEmployee = props">
+              <tr @click="getDeductions(props)">
                 <td>{{ props.item.firstName }}</td>
                 <td>{{ props.item.lastName }}</td>
                 <td class="text-xs-center">{{ props.item.dependents.length }}</td>
@@ -62,7 +62,7 @@
             elevation24
             align-center
             fill-height
-            color="accent"
+            color="primary"
             v-if="selectedEmployee !== null"
           >
             <v-card-title primary-title>
@@ -72,6 +72,49 @@
                 >Benefit costs for {{ selectedEmployee.item.lastName }}, {{ selectedEmployee.item.firstName }}</h3>
               </div>
             </v-card-title>
+            <v-spacer></v-spacer>
+            <v-divider></v-divider>
+            <v-spacer></v-spacer>
+            <v-card-text class="deduction-details">
+              <span class="subheading">
+                <b>Salary</b>
+              </span>
+              <v-divider></v-divider>
+              <v-layout row wrap>
+                <v-text-field
+                  label="Period"
+                  v-model="deductionDetails.deductionDetail.periodSalary"
+                ></v-text-field>
+                <v-text-field
+                  label="Annual"
+                  v-model="deductionDetails.deductionDetail.annualSalary"
+                ></v-text-field>
+              </v-layout>
+              <span class="subheading">
+                <b>Deductions</b>
+              </span>
+              <v-spacer></v-spacer>
+              <v-divider></v-divider>
+              <v-spacer></v-spacer>
+              <v-layout row wrap>
+                <v-text-field
+                  label="Period"
+                  v-model="deductionDetails.deductionDetail.periodDeductions"
+                ></v-text-field>
+                <v-text-field
+                  label="Annual"
+                  v-model="deductionDetails.deductionDetail.annualDeductions"
+                ></v-text-field>
+              </v-layout>
+              <v-spacer></v-spacer>
+              <span class="subheading>" v-if="deductionDetails.employee.dependents.length > 0">
+                <b>Dependents</b>
+              </span>
+              <v-list v-for="dep in deductionDetails.employee.dependents" :key="dep.lastName">
+                <v-list-tile>{{ dep.lastName }}, {{ dep.firstName }}</v-list-tile>
+                <v-divider></v-divider>
+              </v-list>
+            </v-card-text>
           </v-card>
         </transition>
       </v-flex>
@@ -84,6 +127,10 @@
   color: white;
 }
 .dialog-title {
+  color: black;
+}
+.deduction-details {
+  background: white;
   color: black;
 }
 </style>
@@ -101,6 +148,7 @@ export default {
       dependentLastName: "",
       employees: [],
       dependents: [],
+      deductionDetails: {},
       headers: [
         {
           text: "First Name",
@@ -147,20 +195,19 @@ export default {
 
       // add the dependents
       if (this.dependents.length > 0) {
-        console.log("upserting dependents");
-        console.log(this.dependents);
         await this.upsertDependents(employeeId);
 
         console.log(`adding dependents to employee ${employeeId}`);
+        const payload = {
+          id: employeeId,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          dependents: this.dependents
+        };
 
         // update the employee with the list of dependents
         var updateResult = await this.$payrollApi.upsertEmployee.put({
-          payload: {
-            id: employeeId,
-            firstName: this.firstName,
-            lastName: this.lastName,
-            dependents: this.dependents
-          }
+          payload: payload
         });
       }
 
@@ -169,16 +216,19 @@ export default {
     },
     async upsertDependents(employeeId) {
       for (let i = 0; i < this.dependents.length; i++) {
+        const payload = {
+          employeeId: employeeId,
+          firstName: this.dependents[i].firstName,
+          lastName: this.dependents[i].lastName
+        };
+        console.log("upserting dependent...");
+        console.log(payload);
         var result = await this.$payrollApi.upsertDependent.put({
-          payload: {
-            employeeId: employeeId,
-            firstName: this.dependents[i].firstName,
-            lastName: this.dependents[i].lastName
-          }
+          payload: payload
         });
-        console.log("after dependent upsert");
-        console.log(result);
+
         this.dependents[i].id = result.data.id;
+        this.dependents[i].employeeId = employeeId;
       }
     },
     addDependent() {
@@ -189,6 +239,16 @@ export default {
 
       this.dependentFirstName = "";
       this.dependentLastName = "";
+    },
+    async getDeductions(props) {
+      this.selectedEmployee = props;
+
+      var result = await this.$payrollApi.getDeductions.get({
+        params: { employeeId: this.selectedEmployee.item.id }
+      });
+
+      this.deductionDetails = result.data;
+      console.log(deductionDetails.dependents);
     }
   }
 };

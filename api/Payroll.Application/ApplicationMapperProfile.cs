@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Payroll.Application.AddDependents;
 using Payroll.Application.Models;
+using Payroll.Application.UpsertDependents;
 
 namespace Payroll.Application
 {
@@ -8,8 +8,8 @@ namespace Payroll.Application
     {
         public ApplicationMapperProfile()
         {
-            CreateMap<AddEmployee.AddEmployee, Employee>().ReverseMap();
-            CreateMap<AddDependent, Dependent>().ReverseMap();
+            CreateMap<UpsertEmployee.UpsertEmployee, Employee>().ReverseMap();
+            CreateMap<UpsertDependent, Dependent>().ReverseMap();
         }
     }
 }

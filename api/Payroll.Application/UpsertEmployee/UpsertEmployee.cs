@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 using Payroll.Application.Models;
 
-namespace Payroll.Application.AddEmployee
+namespace Payroll.Application.UpsertEmployee
 {
-    public class AddEmployee : IRequest<Employee>
+    public class UpsertEmployee : IRequest<Employee>
     {
+        public Guid? Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

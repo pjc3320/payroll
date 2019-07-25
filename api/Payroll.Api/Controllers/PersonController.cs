@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Payroll.Application.AddDependents;
-using Payroll.Application.AddEmployee;
 using Payroll.Application.GetEmployees;
+using Payroll.Application.UpsertDependents;
+using Payroll.Application.UpsertEmployee;
 
 namespace Payroll.Api.Controllers
 {
@@ -28,7 +28,7 @@ namespace Payroll.Api.Controllers
 
         [HttpPut]
         [Route("employees")]
-        public async Task<IActionResult> Put([FromBody] AddEmployee request)
+        public async Task<IActionResult> Put([FromBody] UpsertEmployee request)
         {
             var result = await _mediator.Send(request);
 
@@ -37,7 +37,7 @@ namespace Payroll.Api.Controllers
 
         [HttpPut]
         [Route("dependents")]
-        public async Task<IActionResult> PutDependent([FromBody] AddDependent request)
+        public async Task<IActionResult> PutDependent([FromBody] UpsertDependent request)
         {
             var result = await _mediator.Send(request);
 

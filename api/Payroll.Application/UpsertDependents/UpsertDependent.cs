@@ -2,9 +2,9 @@
 using MediatR;
 using Payroll.Application.Models;
 
-namespace Payroll.Application.AddDependents
+namespace Payroll.Application.UpsertDependents
 {
-    public class AddDependent : IRequest<Dependent>
+    public class UpsertDependent : IRequest<Dependent>
     {
         public Guid EmployeeId { get; set; }
 

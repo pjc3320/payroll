@@ -5,20 +5,20 @@ using AutoMapper;
 using MediatR;
 using Payroll.Application.Models;
 
-namespace Payroll.Application.AddEmployee
+namespace Payroll.Application.UpsertEmployee
 {
-    public class AddEmployeeHandler : IRequestHandler<AddEmployee, Employee>
+    public class UpsertEmployeeHandler : IRequestHandler<UpsertEmployee, Employee>
     {
         private readonly IEmployeeRepository _repository;
         private readonly IMapper _mapper;
 
-        public AddEmployeeHandler(IEmployeeRepository repository, IMapper mapper)
+        public UpsertEmployeeHandler(IEmployeeRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public async Task<Employee> Handle(AddEmployee request, CancellationToken cancellationToken)
+        public async Task<Employee> Handle(UpsertEmployee request, CancellationToken cancellationToken)
         {
             var employee = _mapper.Map<Employee>(request);
             if (employee.Id == Guid.Empty)

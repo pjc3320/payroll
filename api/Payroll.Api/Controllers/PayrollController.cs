@@ -16,7 +16,8 @@ namespace Payroll.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CalculateBenefitCosts([FromBody] GetPayrollDeductions request)
+        [Route("deductions")]
+        public async Task<IActionResult> CalculateBenefitCosts([FromQuery] GetPayrollDeductions request)
         {
             var result = await _mediator.Send(request);
 

@@ -10,6 +10,12 @@ export default class {
       ["get"]
     );
 
+    this.getDeductions = new PayrollEndpoint(
+      this.interface,
+      "/payroll/deductions",
+      ["get"]
+    );
+
     this.upsertEmployee = new PayrollEndpoint(
       this.interface,
       "/people/employees",

@@ -5,20 +5,20 @@ using AutoMapper;
 using MediatR;
 using Payroll.Application.Models;
 
-namespace Payroll.Application.AddDependents
+namespace Payroll.Application.UpsertDependents
 {
-    public class AddDependentHandler : IRequestHandler<AddDependent, Dependent>
+    public class UpsertDependentHandler : IRequestHandler<UpsertDependent, Dependent>
     {
         private readonly IDependentRepository _dependentRepository;
         private readonly IMapper _mapper;
 
-        public AddDependentHandler(IDependentRepository dependentRepository, IMapper mapper)
+        public UpsertDependentHandler(IDependentRepository dependentRepository, IMapper mapper)
         {
             _dependentRepository = dependentRepository;
             _mapper = mapper;
         }
 
-        public async Task<Dependent> Handle(AddDependent request, CancellationToken cancellationToken)
+        public async Task<Dependent> Handle(UpsertDependent request, CancellationToken cancellationToken)
         {
             var dependent = _mapper.Map<Dependent>(request);
             dependent.Id = Guid.NewGuid();

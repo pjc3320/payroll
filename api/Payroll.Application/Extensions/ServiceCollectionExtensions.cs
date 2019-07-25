@@ -63,6 +63,7 @@ namespace Payroll.Application.Extensions
         {
             services.AddTransient<IBucketAction, PrimaryIndexBucketBucketAction>();
             services.AddTransient<IBucketAction, EmployeeIndexBucketBucketAction>();
+            services.AddTransient<IBucketAction, EmployeeSeedBucketAction>();
 
             return services;
         }

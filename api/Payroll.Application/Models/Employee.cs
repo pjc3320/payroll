@@ -21,6 +21,6 @@ namespace Payroll.Application.Models
         [JsonIgnore]
         public int DependentCount => Dependents.Count();
 
-        public IEnumerable<Dependent> Dependents { get; set; }
+        public IEnumerable<Dependent> Dependents { get; set; } = new List<Dependent>();
     }
 }
