@@ -54,6 +54,7 @@ namespace Payroll.Application.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IDependentRepository, DependentRepository>();
 
             return services;
         }
@@ -62,6 +63,7 @@ namespace Payroll.Application.Extensions
         {
             services.AddTransient<IBucketAction, PrimaryIndexBucketBucketAction>();
             services.AddTransient<IBucketAction, EmployeeIndexBucketBucketAction>();
+            services.AddTransient<IBucketAction, EmployeeSeedBucketAction>();
 
             return services;
         }

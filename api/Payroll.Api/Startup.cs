@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Payroll.Application.Couchbase.BucketActions;
@@ -45,6 +46,10 @@ namespace Payroll.Api
             services.AddRepositories();
             services.AddActions();
             services.AddDependencies();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Payroll Api", Version = "v1" });
+            });
 
 
             var actions = services.BuildServiceProvider().GetServices<IBucketAction>().ToList();
@@ -57,6 +62,11 @@ namespace Payroll.Api
             app.UseCors("default");
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payroll Api v1");
+            });
         }
     }
 }

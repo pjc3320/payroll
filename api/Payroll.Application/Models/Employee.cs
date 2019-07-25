@@ -1,23 +1,26 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Payroll.Application.Models
 {
-    [Serializable]
-    [BindProperties(SupportsGet = true)]
-    public class Employee
+    public class Employee : Person
     {
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
+        private const double GrossAnnualSalary = 52000;
 
-        [JsonProperty("firstName")]
-        public string FirstName { get; set; }
+        public override Guid Id { get; set; }
 
-        [JsonProperty("lastName")]
-        public string LastName { get; set; }
+        public override string FirstName { get; set; }
 
-        [JsonProperty("dependents")]
-        public int Dependents { get; set; }
+        public override string LastName { get; set; }
+
+        [JsonIgnore]
+        public double Salary => GrossAnnualSalary;
+
+        [JsonIgnore]
+        public int DependentCount => Dependents.Count();
+
+        public IEnumerable<Dependent> Dependents { get; set; } = new List<Dependent>();
     }
 }
