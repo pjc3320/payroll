@@ -14,6 +14,11 @@ namespace Payroll.Application
 
         public EmployeeRepository(IBucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             var entityDescription = new EntityHelper<Employee>("employee",e => e.Id.ToString());
             
             Employees = new Repository<Employee>(bucket, entityDescription);

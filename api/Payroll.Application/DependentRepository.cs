@@ -14,6 +14,11 @@ namespace Payroll.Application
 
         public DependentRepository(IBucket bucket)
         {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
             var entityDescription = new EntityHelper<Dependent>("dependent", e => e.Id.ToString());
 
             Dependents = new Repository<Dependent>(bucket, entityDescription);

@@ -15,6 +15,10 @@ namespace Payroll.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Gets the deductions costs for an employee.
+        /// </summary>
+        /// <param name="request">The request.</param>
         [HttpGet]
         [Route("deductions")]
         public async Task<IActionResult> CalculateBenefitCosts([FromQuery] GetPayrollDeductions request)

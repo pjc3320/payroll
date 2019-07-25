@@ -17,7 +17,7 @@ namespace Payroll.Application.GetPayrollDeductions
 
         public GetPayrollDeductionHandler(IEmployeeRepository employeeRepository)
         {
-            _employeeRepository = employeeRepository;
+            _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
         }
 
         public async Task<GetPayrollDeductionResponse> Handle(GetPayrollDeductions request,

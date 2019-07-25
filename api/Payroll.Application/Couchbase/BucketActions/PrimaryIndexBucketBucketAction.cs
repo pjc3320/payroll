@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Couchbase.Core;
 using Couchbase.Repositories.Implementations;
 
@@ -10,7 +11,7 @@ namespace Payroll.Application.Couchbase.BucketActions
 
         public PrimaryIndexBucketBucketAction(IBucket bucket)
         {
-            _bucket = bucket;
+            _bucket = bucket ?? throw new ArgumentNullException(nameof(bucket));
         }
 
         public async Task Execute()

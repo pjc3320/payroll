@@ -17,6 +17,10 @@ namespace Payroll.Api.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Gets all employees from the repository.
+        /// </summary>
+        /// <param name="request">The request.</param>
         [HttpGet]
         [Route("employees")]
         public async Task<IActionResult> GetAll(GetEmployees request)
@@ -26,6 +30,10 @@ namespace Payroll.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Inserts or updates an employee.
+        /// </summary>
+        /// <param name="request">The request.</param>
         [HttpPut]
         [Route("employees")]
         public async Task<IActionResult> Put([FromBody] UpsertEmployee request)
@@ -35,6 +43,10 @@ namespace Payroll.Api.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Inserts or updates a dependent.
+        /// </summary>
+        /// <param name="request">The request.</param>
         [HttpPut]
         [Route("dependents")]
         public async Task<IActionResult> PutDependent([FromBody] UpsertDependent request)
