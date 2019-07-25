@@ -11,7 +11,7 @@
 1. Navigate to the couchbase folder
 1. To build your Docker Couchbase image, Execute the build script by running ```./build.sh``` in your favorite terminal application
 1. Upon a successful build, you're ready to start your Couchbase container by running ```./run.sh```
-1. While Couchbase is intializing the cluster (usually takes about 2 minutes), browse to the [web][vuesetup] project setup and follow those instructions. You really should run ```npm run serve``` so that your development dev server stays running for you
+1. While Couchbase is intializing the cluster (usually takes about 2 minutes), browse to the [web][vuesetup] project setup and follow those instructions. Most importantly, you should run ```npm run serve``` so that your development web server stays running for you
 1. In a new terminal window, navigate to the api folder and get the API up by running ```./run.sh```
 1. Open your favorite web browser and navigate to the [application][apphome]!
 
