@@ -12,8 +12,8 @@ namespace Payroll.Application.Couchbase.BucketActions
 
         public EmployeeSeedBucketAction(IEmployeeRepository employeeRepository, IDependentRepository dependentRepository)
         {
-            _employeeRepository = employeeRepository;
-            _dependentRepository = dependentRepository;
+            _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
+            _dependentRepository = dependentRepository ?? throw new ArgumentNullException(nameof(dependentRepository));
         }
 
         public async Task Execute()

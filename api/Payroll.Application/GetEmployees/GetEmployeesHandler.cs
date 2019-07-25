@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace Payroll.Application.GetEmployees
 
         public GetEmployeesHandler(IEmployeeRepository repository)
         {
-            _repository = repository;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
         public async Task<PagedResult<Employee>> Handle(GetEmployees request, CancellationToken cancellationToken)

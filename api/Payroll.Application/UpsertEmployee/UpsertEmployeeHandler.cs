@@ -14,8 +14,8 @@ namespace Payroll.Application.UpsertEmployee
 
         public UpsertEmployeeHandler(IEmployeeRepository repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<Employee> Handle(UpsertEmployee request, CancellationToken cancellationToken)

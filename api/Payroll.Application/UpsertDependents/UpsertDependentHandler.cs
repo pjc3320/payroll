@@ -14,8 +14,8 @@ namespace Payroll.Application.UpsertDependents
 
         public UpsertDependentHandler(IDependentRepository dependentRepository, IMapper mapper)
         {
-            _dependentRepository = dependentRepository;
-            _mapper = mapper;
+            _dependentRepository = dependentRepository ?? throw new ArgumentNullException(nameof(dependentRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<Dependent> Handle(UpsertDependent request, CancellationToken cancellationToken)
