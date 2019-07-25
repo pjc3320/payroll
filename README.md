@@ -3,7 +3,7 @@
 ## Prerequisites
 
 1. [Docker][docker]
-1. [].NET Core 2.2][netcore]
+1. [.NET Core 2.2][netcore]
 1. [NodeJS][node]
 1. [Visual Studio 2019][vs2019] (*optional*, or another capable IDE to run .NET Core apps)
 
